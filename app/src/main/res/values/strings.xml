@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Iksica I Studomat</string>
+    <string name="login_email">Email</string>
 </resources>

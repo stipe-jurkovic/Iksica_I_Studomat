@@ -28,11 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         buildConfig = true
@@ -47,7 +47,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.material3.android)
-    implementation(files("C:/Users/Stipe/ApkProjects/IksicaIStudomat2/app-debug.aar"))
+    implementation(files("../libs/app-debug.aar"))
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.appcompat)
@@ -83,4 +83,4 @@ dependencies {
     implementation(libs.ui.text.google.fonts)
     implementation(libs.dotsindicator)
     implementation(libs.glide)
-    }
+}

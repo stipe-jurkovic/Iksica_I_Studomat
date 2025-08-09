@@ -5,10 +5,12 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.res.stringResource
+import com.iksica.myapplication.LoginViewModel
+import com.iksica.myapplication.R
 import com.iksica.myapplication.navigation.LoginRouter
 import com.tstudioz.fax.fme.compose.AppTheme
 import com.tstudioz.fax.fme.feature.login.compose.LoginCompose
-import com.tstudioz.fax.fme.feature.login.view.LoginViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,10 +33,11 @@ class LoginActivity : AppCompatActivity() {
                 LoginCompose(
                     showLoading = loginViewModel.showLoading,
                     snackbarHostState = loginViewModel.snackbarHostState,
-                    username = loginViewModel.username,
+                    username = loginViewModel.email,
                     password = loginViewModel.password,
                     passwordHidden = loginViewModel.passwordHidden,
-                    tryUserLogin = { loginViewModel.tryUserLogin() }
+                    tryUserLogin = { loginViewModel.tryUserLogin() },
+                    emailOrUsernameText = stringResource(R.string.login_email),
                 )
             }
         }
