@@ -36,7 +36,7 @@ class LoginViewModel(
     val showLoading = MutableLiveData(false)
     val snackbarHostState: SnackbarHostState = SnackbarHostState()
     var passwordHidden = MutableLiveData(true)
-    val monsterCookieJar: MonsterCookieJar by inject<MonsterCookieJar>(MonsterCookieJar::class.java )
+    val monsterCookieJar: MonsterCookieJar by inject<MonsterCookieJar>(MonsterCookieJar::class.java)
 
     var firstTimeInApp = MutableLiveData(false)
         private set
