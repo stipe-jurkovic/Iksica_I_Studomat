@@ -3,6 +3,7 @@ package com.iksica.myapplication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -44,6 +45,7 @@ import org.koin.compose.koinInject
 fun HomeTabCompose(
     homeViewModel: HomeViewModel = koinViewModel(),
     menzaViewModel: MenzaViewModel = koinViewModel(),
+    innerPaddingValues: PaddingValues,
     router: HomeRouter = koinInject<HomeRouter>(),
 ) {
 
@@ -60,11 +62,12 @@ fun HomeTabCompose(
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxHeight()) {
                 if (menzaViewModel.menzaOpened.observeAsState().value == true) {
-                    MenzaCompose(menzaViewModel)
+                    MenzaCompose(menzaViewModel, innerPaddingValues)
                     return@Scaffold
                 }
                 LazyColumn(
                     Modifier
+                        .padding(innerPaddingValues)
                         .padding(paddingValues)
                 ) {
                     item {

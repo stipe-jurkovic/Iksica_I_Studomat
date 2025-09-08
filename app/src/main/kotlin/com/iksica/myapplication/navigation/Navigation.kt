@@ -2,7 +2,6 @@ package com.iksica.myapplication.navigation
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -82,7 +81,6 @@ fun MainNavHost(
         NavHost(
             navController = navController,
             startDestination = startDestination,
-            modifier = Modifier.padding(innerPadding),
             enterTransition = {
                 EnterTransition.None
             },
@@ -90,13 +88,13 @@ fun MainNavHost(
                 ExitTransition.None
             }) {
             composable<Iksica> {
-                IksicaCompose(iksicaViewModel)
+                IksicaCompose(iksicaViewModel, innerPaddingValues = innerPadding)
             }
             composable<Home> {
-                HomeTabCompose(homeViewModel)
+                HomeTabCompose(homeViewModel, innerPaddingValues = innerPadding)
             }
             composable<Studomat> {
-                StudomatCompose(studomatViewModel)
+                StudomatCompose(studomatViewModel, innerPaddingValues = innerPadding)
             }
         }
     }
