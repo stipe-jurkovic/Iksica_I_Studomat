@@ -1,5 +1,6 @@
 package com.iksica.myapplication.feature.home
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,16 +25,18 @@ import com.tstudioz.fax.fme.compose.lust
 import com.tstudioz.fax.fme.compose.meniColor
 import com.tstudioz.fax.fme.feature.home.view.sidePadding
 import com.tstudioz.fax.fme.feature.iksica.compose.angledGradientBackground
+import com.tstudioz.fax.fme.util.SPKey
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.koin.compose.koinInject
+import com.tstudioz.fax.fme.util.PreferenceHelper.get
 
 @OptIn(InternalCoroutinesApi::class)
 @Composable
 fun ManyCardsCompose(openStMenza: () -> Unit, openZgMenza: () -> Unit, homeViewModel: HomeViewModel) {
+    val shPrefs: SharedPreferences = koinInject<SharedPreferences>()
+    val testingProfileActive = shPrefs[SPKey.TEST_MODE, false]
     Row(Modifier.padding(horizontal = sidePadding)) {
-        Column(
-            Modifier
-                .weight(0.5f)
-        ) {
+        Column(Modifier.weight(0.5f)) {
             val noInternetMenza = stringResource(R.string.no_internet_menza)
             CardCompose(
                 stringResource(id = R.string.menza_title) + " ST",
@@ -41,7 +44,7 @@ fun ManyCardsCompose(openStMenza: () -> Unit, openZgMenza: () -> Unit, homeViewM
                 meniColor,
                 meniColor,
                 onClick = {
-                    if (homeViewModel.internetAvailable.value == true) {
+                    if (homeViewModel.internetAvailable.value == true || testingProfileActive) {
                         openStMenza()
                     } else {
                         homeViewModel.showSnackbar(message = noInternetMenza)
@@ -56,7 +59,7 @@ fun ManyCardsCompose(openStMenza: () -> Unit, openZgMenza: () -> Unit, homeViewM
                 meniColor,
                 meniColor,
                 onClick = {
-                    if (homeViewModel.internetAvailable.value == true) {
+                    if (homeViewModel.internetAvailable.value == true || testingProfileActive) {
                         openZgMenza()
                     } else {
                         homeViewModel.showSnackbar(message = noInternetMenza)

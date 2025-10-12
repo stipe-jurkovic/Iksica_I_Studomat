@@ -24,12 +24,8 @@ fun ZgMealTimeContent(menza: Meal?, mealTime: MealTime) {
 
     if (menza == null) return
 
-    val cornerRadius = 15.dp
     val mealModifier = Modifier
         .padding(bottom = 16.dp)
-        //.clip(RoundedCornerShape(cornerRadius))
-        //.background(MaterialTheme.colorScheme.background)
-        //.padding(24.dp, 8.dp)
         .fillMaxWidth()
     Column (
         Modifier
