@@ -2,10 +2,12 @@ package com.iksica.myapplication.feature.home
 
 import android.content.SharedPreferences
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -79,7 +81,8 @@ fun ManyCardsCompose(openStMenza: () -> Unit, openZgMenza: () -> Unit, homeViewM
                 lust,
                 onClick = {
                     homeViewModel.launchStudentskiUgovoriApp()
-                }
+                },
+                ad = true
             )
         }
     }
@@ -92,7 +95,8 @@ fun CardCompose(
     color1: Color,
     color2: Color,
     onClick: () -> Unit = { },
-    height: Dp = 200.dp
+    height: Dp = 200.dp,
+    ad: Boolean = false
 ) {
     Column(
         modifier = Modifier
@@ -105,16 +109,24 @@ fun CardCompose(
                 degrees = 60f,
                 true
             )
-            .padding(15.dp)
+            .padding(15.dp),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-        )
-        Text(
-            text = description,
-            style = MaterialTheme.typography.titleSmall
-        )
+        Column {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = description,
+                style = MaterialTheme.typography.titleSmall
+            )
+        }
+        if (ad) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                Text(stringResource(com.iksica.myapplication.R.string.oglas_ad))
+            }
+        }
     }
 }

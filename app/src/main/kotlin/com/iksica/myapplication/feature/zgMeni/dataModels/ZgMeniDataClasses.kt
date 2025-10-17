@@ -1,7 +1,15 @@
 package com.iksica.myapplication.feature.zgMeni.dataModels
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class MenuResponse(
@@ -31,8 +39,32 @@ data class AuthorMeta(
 data class Meta(
     @SerialName("menu_restaurant_id") val menuRestaurantId: Int,
     @SerialName("menu_date") val menuDate: String,
-    @SerialName("menu_products") val menuProducts: MenuProducts
+    @Serializable(with = MenuProductsSerializer::class)
+    @SerialName("menu_products") val menuProducts: MenuProducts?
 )
+
+object MenuProductsSerializer : KSerializer<MenuProducts?> {
+    override val descriptor: SerialDescriptor =
+        ListSerializer(MenuProducts.serializer()).descriptor
+
+    override fun serialize(
+        encoder: Encoder,
+        value: MenuProducts?
+    ) {
+        value?.let{ encoder.encodeSerializableValue(MenuProducts.serializer(), it) }
+    }
+
+    override fun deserialize(decoder: Decoder): MenuProducts? {
+        val input = decoder as? JsonDecoder ?: error("Expected JsonDecoder")
+        val element = input.decodeJsonElement()
+        return when (element) {
+            is JsonObject -> {
+                Json.decodeFromJsonElement(MenuProducts.serializer(), element)
+            }
+            else -> null
+        }
+    }
+}
 
 @Serializable
 data class MenuProducts(

@@ -1,5 +1,6 @@
 package com.iksica.myapplication.navigation
 
+import android.content.SharedPreferences
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.size
@@ -38,9 +39,12 @@ import com.tstudioz.fax.fme.navigation.Iksica
 import com.tstudioz.fax.fme.navigation.NoInternetIcon
 import com.tstudioz.fax.fme.navigation.Studomat
 import com.tstudioz.fax.fme.navigation.TopLevelRoute
+import com.tstudioz.fax.fme.util.PreferenceHelper.get
+import com.tstudioz.fax.fme.util.SPKey
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @OptIn(InternalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 @Composable
@@ -67,6 +71,8 @@ fun MainNavHost(
     homeViewModel: HomeViewModel = koinViewModel(),
 ) {
     val internetAvailable = homeViewModel.internetAvailable.observeAsState().value == true
+    val shPrefs: SharedPreferences = koinInject<SharedPreferences>()
+    val testingProfileActive = shPrefs[SPKey.TEST_MODE, false]
     Scaffold(
         bottomBar = {
             MainBottomBar(
@@ -75,7 +81,7 @@ fun MainNavHost(
             )
         },
         floatingActionButton = {
-            if (!internetAvailable) NoInternetIcon()
+            if (!internetAvailable && !testingProfileActive) NoInternetIcon()
         }
     ) { innerPadding ->
         NavHost(

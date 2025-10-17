@@ -65,8 +65,8 @@ fun ZgMeniCompose(meni: List<MenuResponse>?, location: Post) {
                 modifier = Modifier.padding(8.dp, 8.dp, 0.dp, 8.dp)
             )
             val menuProducts = it.meta.menuProducts
-            ZgMealTimeContent(menuProducts.rucak, MealTime.LUNCH)
-            ZgMealTimeContent(menuProducts.vecera, MealTime.DINNER)
+            ZgMealTimeContent(menuProducts?.rucak, MealTime.LUNCH)
+            ZgMealTimeContent(menuProducts?.vecera, MealTime.DINNER)
         }
         if (meni.isNullOrEmpty()) {
             Column(

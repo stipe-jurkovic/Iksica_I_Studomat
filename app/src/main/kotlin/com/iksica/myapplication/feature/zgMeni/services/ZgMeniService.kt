@@ -1,5 +1,6 @@
 package com.iksica.myapplication.feature.zgMeni.services
 
+import android.util.Log
 import com.iksica.myapplication.feature.zgMeni.dataModels.MenuResponse
 import com.iksica.myapplication.feature.zgMeni.dataModels.Post
 import com.iksica.myapplication.feature.zgMeni.dataModels.Root
@@ -15,7 +16,8 @@ import java.time.format.DateTimeFormatter
 
 class ZgMeniService(private val client: OkHttpClient) {
 
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json { ignoreUnknownKeys = true
+    }
 
     fun fetchLocationData(): List<Post>? {
         val url = targetUrl
@@ -38,7 +40,7 @@ class ZgMeniService(private val client: OkHttpClient) {
         try{
             posts = json.decodeFromString<Root>(jsonString).props.pageProps.posts.sortedBy { it.id }
         } catch (e: Exception){
-
+            Log.d("ZgMeni", e.toString())
         }
         return posts
     }
@@ -74,7 +76,7 @@ class ZgMeniService(private val client: OkHttpClient) {
                 it.copy(id = it.meta.menuRestaurantId)
             }
         } catch (e: Exception){
-
+            Log.d("ZgMeni", e.toString())
         }
 
         return menies?.sortedBy { it.id }
