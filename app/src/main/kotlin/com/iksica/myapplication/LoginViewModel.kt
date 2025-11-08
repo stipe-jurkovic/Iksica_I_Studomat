@@ -93,7 +93,7 @@ class LoginViewModel(
 
             when (success) {
                 is NetworkServiceResult.IksicaResult.Success -> {
-                    if (success.data != "" && success.data.split(" ").size == 2) {
+                    if (success.data != "" && success.data.split(" ").size >= 2) {
                         loggedIn.postValue(Unit)
                         userDao.insert(UserRoom(User(success.data, email, password)))
                         sharedPreferences[SPKey.LOGGED_IN] = true
