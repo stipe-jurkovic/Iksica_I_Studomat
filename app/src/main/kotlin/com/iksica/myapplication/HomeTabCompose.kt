@@ -26,11 +26,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
+import com.iksica.myapplication.feature.home.ManyCardsCompose
+import com.iksica.myapplication.feature.zgMeni.ZgMeniViewModel
+import com.iksica.myapplication.feature.zgMeni.ZgMenzaCompose
 import com.iksica.myapplication.navigation.HomeRouter
 import com.tstudioz.fax.fme.R
 import com.tstudioz.fax.fme.compose.AppTheme
 import com.tstudioz.fax.fme.database.models.Note
-import com.tstudioz.fax.fme.feature.home.compose.CardsCompose
 import com.tstudioz.fax.fme.feature.home.compose.NotesCompose
 import com.tstudioz.fax.fme.feature.home.models.WeatherDisplay
 import com.tstudioz.fax.fme.feature.home.view.WeatherCompose
@@ -45,6 +47,7 @@ import org.koin.compose.koinInject
 fun HomeTabCompose(
     homeViewModel: HomeViewModel = koinViewModel(),
     menzaViewModel: MenzaViewModel = koinViewModel(),
+    zgMenzaViewModel: ZgMeniViewModel = koinViewModel(),
     innerPaddingValues: PaddingValues,
     router: HomeRouter = koinInject<HomeRouter>(),
 ) {
@@ -63,6 +66,10 @@ fun HomeTabCompose(
             Box(modifier = Modifier.fillMaxHeight()) {
                 if (menzaViewModel.menzaOpened.observeAsState().value == true) {
                     MenzaCompose(menzaViewModel, innerPaddingValues)
+                    return@Scaffold
+                }
+                if (zgMenzaViewModel.menzaOpened.observeAsState().value == true) {
+                    ZgMenzaCompose(zgMenzaViewModel, innerPaddingValues)
                     return@Scaffold
                 }
                 LazyColumn(
@@ -105,11 +112,11 @@ fun HomeTabCompose(
                         )
                     }
                     item {
-                        CardsCompose(
+                        ManyCardsCompose(
                             { menzaViewModel.openMenza() },
-                            { homeViewModel.launchStudentskiUgovoriApp() },
-                            internetAvailable = homeViewModel.internetAvailable,
-                            showSnackbar = { message -> homeViewModel.showSnackbar(message) })
+                            { zgMenzaViewModel.openMenza() },
+                            homeViewModel
+                        )
                     }
                 }
             }

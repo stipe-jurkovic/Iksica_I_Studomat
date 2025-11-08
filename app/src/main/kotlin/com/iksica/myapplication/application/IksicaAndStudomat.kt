@@ -6,6 +6,7 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.iksica.myapplication.HomeViewModel
 import com.iksica.myapplication.LoginViewModel
+import com.iksica.myapplication.feature.zgMeni.di.zgMeniModule
 import com.iksica.myapplication.navigation.AppRouter
 import com.iksica.myapplication.navigation.HomeRouter
 import com.iksica.myapplication.navigation.LoginRouter
@@ -62,6 +63,7 @@ class IksicaAndStudomat : Application() {
                 homeModule,
                 menzaModule,
                 studomatModule,
+                zgMeniModule,
                 appModule,// needs to be last as it overrides some dependencies
             )
         }
