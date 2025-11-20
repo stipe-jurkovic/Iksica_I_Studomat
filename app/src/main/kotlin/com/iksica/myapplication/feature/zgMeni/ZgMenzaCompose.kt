@@ -1,6 +1,7 @@
 package com.iksica.myapplication.feature.zgMeni
 
-  import androidx.activity.compose.BackHandler
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,14 +19,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
-import com.iksica.myapplication.feature.compose.GlideImageWithCache
 import com.iksica.myapplication.feature.compose.ZgMeniCompose
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
@@ -40,13 +44,16 @@ fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel, paddingValues: PaddingValu
     val menzas = zgMenzaViewModel.menies.observeAsState().value
     val zgMenzaLocations = zgMenzaViewModel.locationData.observeAsState().value
 
+    LaunchedEffect(Unit) {
+        zgMenzaViewModel.getZgMenies()
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
     ) {
-        val pageCount = zgMenzaLocations?.size
-        if (pageCount == null) return@Surface
+        val pageCount = zgMenzaLocations?.size ?: return@Surface
         val state = rememberPagerState(
             initialPage = (pageCount.div(2)),
             pageCount = { pageCount }
@@ -88,10 +95,30 @@ fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel, paddingValues: PaddingValu
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     val specificLocation = zgMenzaLocations[it]
-                    GlideImageWithCache(url = specificLocation.image_url, contentDescription = "Meni location image")
+                    TopImageFromUrl(url = specificLocation.image_url)
+                    //GlideImageWithCache(url = specificLocation.image_url, contentDescription = "Meni location image")
                     ZgMeniCompose(menzas?.filter { it.id == specificLocation.id }, specificLocation)
                 }
             }
         }
     }
+}
+
+@Composable
+fun TopImageFromUrl(url: String) {
+    val context = LocalContext.current
+    val name = url
+        .substringAfterLast("/")
+        .substringBeforeLast(".")
+        .replace("-", "_")
+        .lowercase()
+
+    val drawableId = remember(name) {
+        context.resources.getIdentifier(
+            name,
+            "drawable",
+            context.packageName
+        )
+    }
+    Image(painter = painterResource(drawableId), contentDescription = "Meni location image")
 }
