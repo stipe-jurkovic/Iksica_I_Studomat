@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -15,15 +17,29 @@ android {
         applicationId = "com.iksica.myapplication"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.0.1"
+        versionCode = 7
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val localPropFileExists = File(rootDir, "local.properties").isFile
+
+    signingConfigs {
+        if (localPropFileExists) {
+            create("releaseDebug") {
+                val localProperties = Properties().apply { load(File(rootDir, "local.properties").inputStream()) }
+                storeFile = file("./../iksica_studomat_keystore.jks")
+                storePassword = localProperties.getProperty("RELEASE_SIGNING_PASSWORD")
+                keyAlias = localProperties.getProperty("RELEASE_KEY_ALIAS")
+                keyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
@@ -32,7 +48,16 @@ android {
             applicationIdSuffix = ".debug"
             isDebuggable = true
         }
+        if (localPropFileExists) {
+            create("releaseDebug") {
+                isMinifyEnabled = true
+                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                signingConfig = signingConfigs.getByName("releaseDebug")
+            }
+        }
+
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
+import com.iksica.myapplication.feature.compose.GlideImageWithCache
 import com.iksica.myapplication.feature.compose.ZgMeniCompose
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
@@ -83,7 +85,7 @@ fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel, paddingValues: PaddingValu
                     pagerState = state,
                 )
             }
-            HorizontalPager(state, pageSpacing = 16.dp) {
+            HorizontalPager(state, pageSpacing = 16.dp) { pageNo ->
                 BackHandler {
                     zgMenzaViewModel.closeMenza()
                 }
@@ -94,10 +96,16 @@ fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel, paddingValues: PaddingValu
                         .background(MaterialTheme.colorScheme.background),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    val specificLocation = zgMenzaLocations[it]
-                    TopImageFromUrl(url = specificLocation.image_url)
-                    //GlideImageWithCache(url = specificLocation.image_url, contentDescription = "Meni location image")
-                    ZgMeniCompose(menzas?.filter { it.id == specificLocation.id }, specificLocation)
+                    val specificLocation = zgMenzaLocations[pageNo]
+                    val noLocalImg = remember { mutableStateOf(false) }
+                    TopImageFromUrl(url = specificLocation.image_url) { noLocalImg.value = true }
+                    if (noLocalImg.value) {
+                        GlideImageWithCache(url = specificLocation.image_url, contentDescription = "Meni location image")
+                    }
+                        ZgMeniCompose(
+                            meni = menzas?.filter { it.id == specificLocation.id },
+                            location = specificLocation,
+                        )
                 }
             }
         }
@@ -105,7 +113,7 @@ fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel, paddingValues: PaddingValu
 }
 
 @Composable
-fun TopImageFromUrl(url: String) {
+fun TopImageFromUrl(url: String, noImage: () -> Unit) {
     val context = LocalContext.current
     val name = url
         .substringAfterLast("/")
@@ -120,5 +128,9 @@ fun TopImageFromUrl(url: String) {
             context.packageName
         )
     }
-    Image(painter = painterResource(drawableId), contentDescription = "Meni location image")
+    if (drawableId != 0) {
+        Image(painter = painterResource(drawableId), contentDescription = "Meni location image")
+    } else {
+        noImage()
+    }
 }

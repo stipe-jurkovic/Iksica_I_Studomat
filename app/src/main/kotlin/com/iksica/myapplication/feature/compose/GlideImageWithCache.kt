@@ -3,9 +3,9 @@ package com.iksica.myapplication.feature.compose
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -49,10 +50,19 @@ fun GlideImageWithCache(url: String?, contentDescription: String, modifier: Modi
     }
 
     bitmap?.let {
-        Image(bitmap = it.asImageBitmap(), contentDescription = contentDescription, modifier = modifier)
+        Image(
+            bitmap = it.asImageBitmap(),
+            contentDescription = contentDescription,
+            modifier = modifier
+        )
     } ?: Column(
-        modifier.background(Color.Black),
+        modifier.padding(40.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) { CircularProgressIndicator(trackColor = Color.White.copy(alpha = 0.3f), color = Color.White) }
+    ) {
+        CircularProgressIndicator(
+            trackColor = Color.White.copy(alpha = 0.3f),
+            color = Color.White
+        )
+    }
 }
