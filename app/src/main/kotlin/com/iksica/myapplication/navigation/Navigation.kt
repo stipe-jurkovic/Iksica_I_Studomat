@@ -29,24 +29,23 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.iksica.myapplication.HomeTabCompose
 import com.iksica.myapplication.HomeViewModel
-import com.tstudioz.fax.fme.compose.AppTheme
-import com.tstudioz.fax.fme.feature.iksica.compose.IksicaCompose
-import com.tstudioz.fax.fme.feature.iksica.view.IksicaViewModel
-import com.tstudioz.fax.fme.feature.studomat.compose.StudomatCompose
-import com.tstudioz.fax.fme.feature.studomat.view.StudomatViewModel
+import com.tstudioz.fax.fme.feature.iksica.IksicaScreen
+import com.tstudioz.fax.fme.feature.iksica.IksicaViewModel
+import com.tstudioz.fax.fme.feature.studomat.StudomatScreen
+import com.tstudioz.fax.fme.feature.studomat.StudomatViewModel
 import com.tstudioz.fax.fme.navigation.Home
 import com.tstudioz.fax.fme.navigation.Iksica
 import com.tstudioz.fax.fme.navigation.NoInternetIcon
 import com.tstudioz.fax.fme.navigation.Studomat
 import com.tstudioz.fax.fme.navigation.TopLevelRoute
+import com.tstudioz.fax.fme.theme.AppTheme
 import com.tstudioz.fax.fme.util.PreferenceHelper.get
 import com.tstudioz.fax.fme.util.SPKey
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
-@OptIn(InternalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 fun MainCompose(startDestination: Any, topLevelRoutes: List<TopLevelRoute<out Any>>) {
     val navController = rememberNavController()
@@ -60,7 +59,7 @@ fun MainCompose(startDestination: Any, topLevelRoutes: List<TopLevelRoute<out An
 }
 
 
-@OptIn(InternalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(InternalCoroutinesApi::class)
 @Composable
 fun MainNavHost(
     navController: NavHostController,
@@ -73,40 +72,41 @@ fun MainNavHost(
     val internetAvailable = homeViewModel.internetAvailable.observeAsState().value == true
     val shPrefs: SharedPreferences = koinInject<SharedPreferences>()
     val testingProfileActive = shPrefs[SPKey.TEST_MODE, false]
-    Scaffold(
-        bottomBar = {
-            MainBottomBar(
-                navController = navController,
-                topLevelRoutes = topLevelRoutes,
-            )
-        },
-        floatingActionButton = {
-            if (!internetAvailable && !testingProfileActive) NoInternetIcon()
-        }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = startDestination,
-            enterTransition = {
-                EnterTransition.None
+    AppTheme {
+        Scaffold(
+            bottomBar = {
+                MainBottomBar(
+                    navController = navController,
+                    topLevelRoutes = topLevelRoutes,
+                )
             },
-            exitTransition = {
-                ExitTransition.None
-            }) {
-            composable<Iksica> {
-                IksicaCompose(iksicaViewModel, innerPaddingValues = innerPadding)
+            floatingActionButton = {
+                if (!internetAvailable && !testingProfileActive) NoInternetIcon()
             }
-            composable<Home> {
-                HomeTabCompose(homeViewModel, innerPaddingValues = innerPadding)
-            }
-            composable<Studomat> {
-                StudomatCompose(studomatViewModel, innerPaddingValues = innerPadding)
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = startDestination,
+                enterTransition = {
+                    EnterTransition.None
+                },
+                exitTransition = {
+                    ExitTransition.None
+                }) {
+                composable<Iksica> {
+                    IksicaScreen(iksicaViewModel, innerPaddingValues = innerPadding)
+                }
+                composable<Home> {
+                    HomeTabCompose(homeViewModel, innerPaddingValues = innerPadding)
+                }
+                composable<Studomat> {
+                    StudomatScreen(studomatViewModel, innerPaddingValues = innerPadding)
+                }
             }
         }
     }
 }
 
-@OptIn(InternalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun MainBottomBar(
     navController: NavHostController,
@@ -119,7 +119,8 @@ fun MainBottomBar(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
         val currentDestinationTop =
-            navController.currentBackStackEntryAsState().value?.destination?.route?.split(".")?.lastOrNull()
+            navController.currentBackStackEntryAsState().value?.destination?.route?.split(".")
+                ?.lastOrNull()
                 ?: ""
         topLevelRoutes.forEach { topLevelRoute ->
             NavigationBarItem(

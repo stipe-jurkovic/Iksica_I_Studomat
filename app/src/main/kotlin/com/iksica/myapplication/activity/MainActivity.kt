@@ -12,8 +12,8 @@ import com.tstudioz.fax.fme.navigation.Home
 import com.tstudioz.fax.fme.navigation.Iksica
 import com.tstudioz.fax.fme.navigation.Studomat
 import com.tstudioz.fax.fme.navigation.TopLevelRoute
-import org.koin.androidx.compose.KoinAndroidContext
 import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.KoinAndroidContext
 
 class MainActivity : AppCompatActivity() {
 

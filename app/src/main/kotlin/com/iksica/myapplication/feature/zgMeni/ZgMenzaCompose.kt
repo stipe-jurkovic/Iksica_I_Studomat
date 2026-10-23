@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +13,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -36,11 +34,9 @@ import com.iksica.myapplication.feature.compose.ZgMeniCompose
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
 import com.tbuonomo.viewpagerdotsindicator.compose.type.BalloonIndicatorType
-import kotlinx.coroutines.InternalCoroutinesApi
 
-@OptIn(ExperimentalMaterial3Api::class, InternalCoroutinesApi::class)
 @Composable
-fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel, paddingValues: PaddingValues) {
+fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel) {
 
     val lifecycleState = LocalLifecycleOwner.current.lifecycle.currentStateAsState().value
     val menzas = zgMenzaViewModel.menies.observeAsState().value
@@ -53,7 +49,6 @@ fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel, paddingValues: PaddingValu
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues)
     ) {
         val pageCount = zgMenzaLocations?.size ?: return@Surface
         val state = rememberPagerState(
@@ -100,12 +95,15 @@ fun ZgMenzaCompose(zgMenzaViewModel: ZgMeniViewModel, paddingValues: PaddingValu
                     val noLocalImg = remember { mutableStateOf(false) }
                     TopImageFromUrl(url = specificLocation.image_url) { noLocalImg.value = true }
                     if (noLocalImg.value) {
-                        GlideImageWithCache(url = specificLocation.image_url, contentDescription = "Meni location image")
-                    }
-                        ZgMeniCompose(
-                            meni = menzas?.filter { it.id == specificLocation.id },
-                            location = specificLocation,
+                        GlideImageWithCache(
+                            url = specificLocation.image_url,
+                            contentDescription = "Meni location image"
                         )
+                    }
+                    ZgMeniCompose(
+                        meni = menzas?.filter { it.id == specificLocation.id },
+                        location = specificLocation,
+                    )
                 }
             }
         }

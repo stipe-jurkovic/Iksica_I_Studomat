@@ -9,8 +9,8 @@ import androidx.compose.ui.res.stringResource
 import com.iksica.myapplication.LoginViewModel
 import com.iksica.myapplication.R
 import com.iksica.myapplication.navigation.LoginRouter
-import com.tstudioz.fax.fme.compose.AppTheme
-import com.tstudioz.fax.fme.feature.login.compose.LoginCompose
+import com.tstudioz.fax.fme.feature.login.LoginScreen
+import com.tstudioz.fax.fme.theme.AppTheme
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         onBackListen()
         setContent {
             AppTheme {
-                LoginCompose(
+                LoginScreen(
                     showLoading = loginViewModel.showLoading,
                     snackbarHostState = loginViewModel.snackbarHostState,
                     username = loginViewModel.email,

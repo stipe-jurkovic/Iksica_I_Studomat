@@ -30,7 +30,6 @@ import com.tstudioz.fax.fme.util.PreferenceHelper.get
 import com.tstudioz.fax.fme.util.SPKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -48,7 +47,6 @@ import org.koin.dsl.module
 class IksicaAndStudomat : Application() {
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    @OptIn(InternalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
     override fun onCreate() {
         super.onCreate()
 
@@ -98,7 +96,7 @@ val appModule = module {
     single { MonsterCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(androidContext())) }
     single<OkHttpClient> { provideOkHttpClient(get()) }
     single<SessionDelegateInterface> { SessionDelegate(get(), get()) }
-    factory<AppDatabase> { getRoomDatabase(get(), DATABASE_NAME) }
+    factory<AppDatabase> { getRoomDatabase(get()) }
     single<SharedPreferences> { getSharedPreferences(androidContext()) }
     viewModel { SettingsViewModel(androidApplication(), get(), get()) }
     viewModel { HomeViewModel(androidApplication(), get(), get(), get()) }

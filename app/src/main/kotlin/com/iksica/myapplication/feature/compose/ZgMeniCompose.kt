@@ -59,7 +59,8 @@ fun ZgMeniCompose(meni: List<MenuResponse>?, location: Post) {
         }
         meni?.sortedBy { it.slug }?.forEach {
             Text(
-                text = HtmlCompat.fromHtml(it.title.rendered, HtmlCompat.FROM_HTML_MODE_LEGACY).toString(),
+                text = HtmlCompat.fromHtml(it.title.rendered, HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    .toString(),
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(8.dp, 8.dp, 0.dp, 8.dp)

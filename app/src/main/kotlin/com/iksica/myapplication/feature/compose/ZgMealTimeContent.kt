@@ -27,7 +27,7 @@ fun ZgMealTimeContent(menza: Meal?, mealTime: MealTime) {
     val mealModifier = Modifier
         .padding(bottom = 16.dp)
         .fillMaxWidth()
-    Column (
+    Column(
         Modifier
             .padding(bottom = 16.dp)
             .clip(RoundedCornerShape(30.dp))

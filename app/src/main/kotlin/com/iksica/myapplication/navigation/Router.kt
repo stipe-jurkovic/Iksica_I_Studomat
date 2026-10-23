@@ -16,7 +16,8 @@ import com.tstudioz.fax.fme.util.SPKey
 import java.lang.ref.WeakReference
 
 
-class Router(val sharedPreferences: SharedPreferences) : AppRouter, LoginRouter, HomeRouter, SettingsRouter {
+class Router(val sharedPreferences: SharedPreferences) : AppRouter, LoginRouter, HomeRouter,
+    SettingsRouter {
 
     private var activity: WeakReference<Activity>? = null
 

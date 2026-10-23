@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SettingsActivity : AppCompatActivity() {
 
     private val router: SettingsRouter by inject()
-    private val settingsViewModel : SettingsViewModel by viewModel<SettingsViewModel>()
+    private val settingsViewModel: SettingsViewModel by viewModel<SettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
