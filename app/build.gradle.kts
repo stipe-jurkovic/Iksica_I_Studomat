@@ -75,7 +75,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.material3.android)
-    implementation(files("../libs/app-debug.aar"))
+    implementation(files("../libs/app-release.aar"))
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.appcompat)
