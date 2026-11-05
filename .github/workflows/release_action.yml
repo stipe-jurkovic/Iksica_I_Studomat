@@ -6,7 +6,7 @@ on:
       app_version:
         description: 'App version'
         required: true
-        default: '3.0.1'
+        default: '1.0.0'
 permissions:
   contents: write
 
