@@ -1,3 +1,4 @@
+import java.util.Base64
 import java.util.Properties
 
 plugins {
@@ -111,4 +112,23 @@ dependencies {
     implementation(libs.ui.text.google.fonts)
     implementation(libs.dotsindicator)
     implementation(libs.glide)
+}
+
+tasks.register("getBuildVersionNumber") {
+    doLast {
+        println(android.defaultConfig.versionCode)
+    }
+}
+
+tasks.register("getNextBuildVersionNumber") {
+    doLast {
+        val currentVersionCode = android.defaultConfig.versionCode ?: 1
+        println(currentVersionCode + 1)
+    }
+}
+
+tasks.register("getAppVersionName") {
+    doLast {
+        println(android.defaultConfig.versionName)
+    }
 }
