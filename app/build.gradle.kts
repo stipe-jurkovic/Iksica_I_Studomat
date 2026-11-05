@@ -1,23 +1,21 @@
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    kotlin("plugin.serialization") version libs.versions.kotlin
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.iksica.myapplication"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.iksica.myapplication"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 7
+        targetSdk = 37
+        versionCode = 14
         versionName = "1.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -26,6 +24,12 @@ android {
     val localPropFileExists = File(rootDir, "local.properties").isFile
 
     signingConfigs {
+        create("release") {
+            storeFile = file("./../keystore.jks")
+            storePassword = System.getenv("RELEASE_SIGNING_PASSWORD")
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+        }
         if (localPropFileExists) {
             create("releaseDebug") {
                 val localProperties = Properties().apply { load(File(rootDir, "local.properties").inputStream()) }
@@ -40,7 +44,9 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isMinifyEnabled = false
@@ -76,7 +82,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.material3.android)
-    implementation(files("../libs/app-debug.aar"))
+    implementation(files("../libs/app-release.aar"))
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.appcompat)
@@ -112,4 +118,23 @@ dependencies {
     implementation(libs.ui.text.google.fonts)
     implementation(libs.dotsindicator)
     implementation(libs.glide)
+}
+
+tasks.register("getBuildVersionNumber") {
+    doLast {
+        println(android.defaultConfig.versionCode)
+    }
+}
+
+tasks.register("getNextBuildVersionNumber") {
+    doLast {
+        val currentVersionCode = android.defaultConfig.versionCode ?: 1
+        println(currentVersionCode + 1)
+    }
+}
+
+tasks.register("getAppVersionName") {
+    doLast {
+        println(android.defaultConfig.versionName)
+    }
 }

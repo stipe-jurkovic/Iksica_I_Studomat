@@ -1,10 +1,11 @@
 package com.iksica.myapplication.activity
 
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material3.MaterialTheme
 import com.iksica.myapplication.navigation.HomeRouter
 import com.iksica.myapplication.navigation.MainCompose
 import com.tstudioz.fax.fme.R
@@ -12,7 +13,6 @@ import com.tstudioz.fax.fme.navigation.Home
 import com.tstudioz.fax.fme.navigation.Iksica
 import com.tstudioz.fax.fme.navigation.Studomat
 import com.tstudioz.fax.fme.navigation.TopLevelRoute
-import org.koin.androidx.compose.KoinAndroidContext
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -29,16 +29,15 @@ class MainActivity : AppCompatActivity() {
 
         router.register(this)
 
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+        )
 
         setContent {
-            MaterialTheme {
-                KoinAndroidContext {
-                    MainCompose(
-                        startDestination = Home, topLevelRoutes = topLevelRoutesIksicaAndStudomat
-                    )
-                }
-            }
+            MainCompose(
+                startDestination = Home, topLevelRoutes = topLevelRoutesIksicaAndStudomat
+            )
         }
     }
 

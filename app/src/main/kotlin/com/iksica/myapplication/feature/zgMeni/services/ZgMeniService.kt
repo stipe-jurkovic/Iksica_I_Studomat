@@ -16,7 +16,8 @@ import java.time.format.DateTimeFormatter
 
 class ZgMeniService(private val client: OkHttpClient) {
 
-    private val json = Json { ignoreUnknownKeys = true
+    private val json = Json {
+        ignoreUnknownKeys = true
     }
 
     fun fetchLocationData(): List<Post>? {
@@ -37,9 +38,9 @@ class ZgMeniService(private val client: OkHttpClient) {
         val doc = Jsoup.parse(body)
         val jsonString = doc.select("script[type=application/json]").first()?.data() ?: ""
         var posts: List<Post>? = null
-        try{
+        try {
             posts = json.decodeFromString<Root>(jsonString).props.pageProps.posts.sortedBy { it.id }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("ZgMeni", e.toString())
         }
         return posts
@@ -75,12 +76,13 @@ class ZgMeniService(private val client: OkHttpClient) {
             menies = json.decodeFromString<List<MenuResponse>>(body).map {
                 it.copy(id = it.meta.menuRestaurantId)
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("ZgMeni", e.toString())
         }
 
         return menies?.sortedBy { it.id }
     }
+
     companion object {
         private const val SCHEME = "https"
 
