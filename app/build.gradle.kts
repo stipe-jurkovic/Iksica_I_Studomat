@@ -51,7 +51,8 @@ android {
         if (localPropFileExists) {
             create("releaseDebug") {
                 isMinifyEnabled = true
-                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                isShrinkResources = true
+                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
                 signingConfig = signingConfigs.getByName("releaseDebug")
             }
         }
@@ -61,9 +62,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
     }
     buildFeatures {
         buildConfig = true
