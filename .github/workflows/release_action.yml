@@ -68,7 +68,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.iksica.myapplication
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: "Beta"
+          tracks: "beta"
           inAppUpdatePriority: 3
           whatsNewDirectory: distribution/whatsnew
           mappingFile: app/build/outputs/mapping/release/mapping.txt
