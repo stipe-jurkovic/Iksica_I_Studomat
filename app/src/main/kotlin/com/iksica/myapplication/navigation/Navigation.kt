@@ -72,36 +72,34 @@ fun MainNavHost(
     val internetAvailable = homeViewModel.internetAvailable.observeAsState().value == true
     val shPrefs: SharedPreferences = koinInject<SharedPreferences>()
     val testingProfileActive = shPrefs[SPKey.TEST_MODE, false]
-    AppTheme {
-        Scaffold(
-            bottomBar = {
-                MainBottomBar(
-                    navController = navController,
-                    topLevelRoutes = topLevelRoutes,
-                )
-            },
-            floatingActionButton = {
-                if (!internetAvailable && !testingProfileActive) NoInternetIcon()
-            }
-        ) { innerPadding ->
-            NavHost(
+    Scaffold(
+        bottomBar = {
+            MainBottomBar(
                 navController = navController,
-                startDestination = startDestination,
-                enterTransition = {
-                    EnterTransition.None
-                },
-                exitTransition = {
-                    ExitTransition.None
-                }) {
-                composable<Iksica> {
-                    IksicaScreen(iksicaViewModel, innerPaddingValues = innerPadding)
-                }
-                composable<Home> {
-                    HomeTabCompose(homeViewModel, innerPaddingValues = innerPadding)
-                }
-                composable<Studomat> {
-                    StudomatScreen(studomatViewModel, innerPaddingValues = innerPadding)
-                }
+                topLevelRoutes = topLevelRoutes,
+            )
+        },
+        floatingActionButton = {
+            if (!internetAvailable && !testingProfileActive) NoInternetIcon()
+        }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            enterTransition = {
+                EnterTransition.None
+            },
+            exitTransition = {
+                ExitTransition.None
+            }) {
+            composable<Iksica> {
+                IksicaScreen(iksicaViewModel, innerPaddingValues = innerPadding)
+            }
+            composable<Home> {
+                HomeTabCompose(homeViewModel, innerPaddingValues = innerPadding)
+            }
+            composable<Studomat> {
+                StudomatScreen(studomatViewModel, innerPaddingValues = innerPadding)
             }
         }
     }
