@@ -24,6 +24,12 @@ android {
     val localPropFileExists = File(rootDir, "local.properties").isFile
 
     signingConfigs {
+        create("release") {
+            storeFile = file("./../keystore.jks")
+            storePassword = System.getenv("RELEASE_SIGNING_PASSWORD")
+            keyAlias = System.getenv("RELEASE_KEY_ALIAS")
+            keyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+        }
         if (localPropFileExists) {
             create("releaseDebug") {
                 val localProperties = Properties().apply { load(File(rootDir, "local.properties").inputStream()) }
@@ -40,6 +46,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isMinifyEnabled = false
