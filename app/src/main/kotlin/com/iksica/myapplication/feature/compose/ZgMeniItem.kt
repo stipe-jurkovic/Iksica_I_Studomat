@@ -13,12 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.iksica.myapplication.feature.zgMeni.dataModels.MenuItem
-import com.tstudioz.fax.fme.feature.menza.view.MeniTextIksica
+import com.tstudioz.fax.fme.feature.menza.compose.MeniTextIksica
 
 @Composable
 fun ZgMeniItem(name: String, meni: List<MenuItem>, modifier: Modifier = Modifier) {
     Column(
-        horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.Top, modifier = modifier
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Top,
+        modifier = modifier
     ) {
         Text(
             text = name,
@@ -30,7 +32,7 @@ fun ZgMeniItem(name: String, meni: List<MenuItem>, modifier: Modifier = Modifier
             var toptext = ""
             if (it.weight.isNotEmpty()) toptext = it.weight + "g"
             if (it.weight.isNotEmpty() && it.allergens.isNotEmpty()) toptext = "$toptext | "
-            if (it.allergens.isNotEmpty()) toptext = toptext + it.allergens
+            if (it.allergens.isNotEmpty()) toptext += it.allergens
             MeniTextIksica(it.title, toptext, index != (meni.size - 1))
         }
 

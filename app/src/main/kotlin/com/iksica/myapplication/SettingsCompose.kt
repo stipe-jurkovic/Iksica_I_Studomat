@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -35,11 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.iksica.myapplication.navigation.SettingsRouter
 import com.tstudioz.fax.fme.R
-import com.tstudioz.fax.fme.compose.AppTheme
-import com.tstudioz.fax.fme.compose.theme_dark_outline
-import com.tstudioz.fax.fme.compose.theme_dark_secondaryContainer
-import com.tstudioz.fax.fme.compose.theme_dark_surface
 import com.tstudioz.fax.fme.feature.settings.SettingsViewModel
+import com.tstudioz.fax.fme.theme.AppTheme
+import com.tstudioz.fax.fme.theme.theme_dark_outline
+import com.tstudioz.fax.fme.theme.theme_dark_secondaryContainer
+import com.tstudioz.fax.fme.theme.theme_dark_surface
 import org.koin.androidx.compose.koinViewModel
 
 val leftPadding = 10.dp
@@ -54,7 +54,9 @@ fun SettingsCompose(viewModel: SettingsViewModel = koinViewModel(), router: Sett
         ) { contentPadding ->
             BottomSheetScaffold(
                 containerColor = theme_dark_surface,
-                modifier = Modifier.fillMaxSize().padding(contentPadding),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding),
                 sheetPeekHeight = 0.dp,
                 sheetContent = {
                     if (viewModel.displayLicences.observeAsState().value == true) {
@@ -224,9 +226,13 @@ fun SettingsCheckbox(
                     checkedThumbColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     uncheckedThumbColor = MaterialTheme.colorScheme.onSecondary.darken(darkenBy),
                     checkedTrackColor = MaterialTheme.colorScheme.secondaryContainer,
-                    uncheckedTrackColor = MaterialTheme.colorScheme.secondaryContainer.darken(darkenBy),
+                    uncheckedTrackColor = MaterialTheme.colorScheme.secondaryContainer.darken(
+                        darkenBy
+                    ),
                     checkedBorderColor = MaterialTheme.colorScheme.secondaryContainer,
-                    uncheckedBorderColor = MaterialTheme.colorScheme.secondaryContainer.darken(darkenBy),
+                    uncheckedBorderColor = MaterialTheme.colorScheme.secondaryContainer.darken(
+                        darkenBy
+                    ),
                 )
             )
         }
@@ -248,7 +254,13 @@ fun LicenceItem(
     supportText: String?
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
-        ListItem(headlineContent = { Text(text = title, fontSize = 20.sp, fontWeight = FontWeight.Bold) })
+        ListItem(headlineContent = {
+            Text(
+                text = title,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        })
         Box(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.surface)

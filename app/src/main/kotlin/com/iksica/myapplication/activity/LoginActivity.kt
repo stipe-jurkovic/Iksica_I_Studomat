@@ -1,16 +1,19 @@
 package com.iksica.myapplication.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.res.stringResource
 import com.iksica.myapplication.LoginViewModel
 import com.iksica.myapplication.R
 import com.iksica.myapplication.navigation.LoginRouter
-import com.tstudioz.fax.fme.compose.AppTheme
-import com.tstudioz.fax.fme.feature.login.compose.LoginCompose
+import com.tstudioz.fax.fme.feature.login.LoginScreen
+import com.tstudioz.fax.fme.theme.AppTheme
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,13 +27,18 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+        )
+
         router.register(this)
 
         isUserLoggedIn()
         onBackListen()
         setContent {
             AppTheme {
-                LoginCompose(
+                LoginScreen(
                     showLoading = loginViewModel.showLoading,
                     snackbarHostState = loginViewModel.snackbarHostState,
                     username = loginViewModel.email,

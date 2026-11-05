@@ -51,7 +51,7 @@ object MenuProductsSerializer : KSerializer<MenuProducts?> {
         encoder: Encoder,
         value: MenuProducts?
     ) {
-        value?.let{ encoder.encodeSerializableValue(MenuProducts.serializer(), it) }
+        value?.let { encoder.encodeSerializableValue(MenuProducts.serializer(), it) }
     }
 
     override fun deserialize(decoder: Decoder): MenuProducts? {
@@ -61,6 +61,7 @@ object MenuProductsSerializer : KSerializer<MenuProducts?> {
             is JsonObject -> {
                 Json.decodeFromJsonElement(MenuProducts.serializer(), element)
             }
+
             else -> null
         }
     }

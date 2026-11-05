@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -23,51 +24,49 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.iksica.myapplication.HomeViewModel
 import com.tstudioz.fax.fme.R
-import com.tstudioz.fax.fme.compose.lust
-import com.tstudioz.fax.fme.compose.meniColor
-import com.tstudioz.fax.fme.feature.home.view.sidePadding
+import com.tstudioz.fax.fme.feature.home.sidePadding
 import com.tstudioz.fax.fme.feature.iksica.compose.angledGradientBackground
+import com.tstudioz.fax.fme.theme.lust
+import com.tstudioz.fax.fme.theme.meniColor
+import com.tstudioz.fax.fme.util.PreferenceHelper.get
 import com.tstudioz.fax.fme.util.SPKey
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.koin.compose.koinInject
-import com.tstudioz.fax.fme.util.PreferenceHelper.get
 
 @OptIn(InternalCoroutinesApi::class)
 @Composable
-fun ManyCardsCompose(openStMenza: () -> Unit, openZgMenza: () -> Unit, homeViewModel: HomeViewModel) {
+fun ManyCardsCompose(
+    openStMenza: () -> Unit,
+    openZgMenza: () -> Unit,
+    homeViewModel: HomeViewModel
+) {
     val shPrefs: SharedPreferences = koinInject<SharedPreferences>()
     val testingProfileActive = shPrefs[SPKey.TEST_MODE, false]
+    val internetAvailable = homeViewModel.internetAvailable.observeAsState().value ?: false
     Row(Modifier.padding(horizontal = sidePadding)) {
         Column(Modifier.weight(0.5f)) {
-            val noInternetMenza = stringResource(R.string.no_internet_menza)
             CardCompose(
                 stringResource(id = R.string.menza_title) + " ST",
                 stringResource(id = R.string.menza_desc),
-                meniColor,
-                meniColor,
+                if (internetAvailable) meniColor else Color.DarkGray,
                 onClick = {
                     if (homeViewModel.internetAvailable.value == true || testingProfileActive) {
                         openStMenza()
-                    } else {
-                        homeViewModel.showSnackbar(message = noInternetMenza)
                     }
                 },
-                100.dp
+                height = 95.dp
             )
             Spacer(Modifier.height(10.dp))
             CardCompose(
                 stringResource(id = R.string.menza_title) + " ZG",
                 stringResource(id = R.string.menza_desc),
-                meniColor,
-                meniColor,
+                if (internetAvailable) meniColor else Color.DarkGray,
                 onClick = {
                     if (homeViewModel.internetAvailable.value == true || testingProfileActive) {
                         openZgMenza()
-                    } else {
-                        homeViewModel.showSnackbar(message = noInternetMenza)
                     }
                 },
-                100.dp
+                height = 95.dp
             )
         }
         Box(
@@ -93,7 +92,7 @@ fun CardCompose(
     title: String,
     description: String,
     color1: Color,
-    color2: Color,
+    color2: Color = color1,
     onClick: () -> Unit = { },
     height: Dp = 200.dp,
     ad: Boolean = false

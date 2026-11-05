@@ -7,22 +7,22 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tstudioz.fax.fme.R
-import com.tstudioz.fax.fme.common.user.UserRepositoryInterface
-import com.tstudioz.fax.fme.common.user.models.User
-import com.tstudioz.fax.fme.common.user.models.UserRoom
 import com.tstudioz.fax.fme.database.AppDatabase
 import com.tstudioz.fax.fme.feature.iksica.services.IksicaLoginServiceInterface
 import com.tstudioz.fax.fme.feature.login.dao.UserDao
-import com.tstudioz.fax.fme.models.NetworkServiceResult
+import com.tstudioz.fax.fme.networking.NetworkServiceResult
 import com.tstudioz.fax.fme.networking.cookies.MonsterCookieJar
+import com.tstudioz.fax.fme.testStuff.receiptsTestData
+import com.tstudioz.fax.fme.testStuff.studentDataTestData
+import com.tstudioz.fax.fme.testStuff.studomatSubjectTestData
+import com.tstudioz.fax.fme.testStuff.studomatYearInfoTestData
+import com.tstudioz.fax.fme.user.UserRepositoryInterface
+import com.tstudioz.fax.fme.user.models.User
+import com.tstudioz.fax.fme.user.models.UserRoom
 import com.tstudioz.fax.fme.util.PreferenceHelper.get
 import com.tstudioz.fax.fme.util.PreferenceHelper.set
 import com.tstudioz.fax.fme.util.SPKey
 import com.tstudioz.fax.fme.util.SingleLiveEvent
-import com.tstudioz.fax.fme.util.receiptsTestData
-import com.tstudioz.fax.fme.util.studentDataTestData
-import com.tstudioz.fax.fme.util.studomatSubjectTestData
-import com.tstudioz.fax.fme.util.studomatYearInfoTestData
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -56,7 +56,7 @@ class LoginViewModel(
     }
 
     private fun addTestData() {
-        val db : AppDatabase by inject(AppDatabase::class.java)
+        val db: AppDatabase by inject(AppDatabase::class.java)
         viewModelScope.launch(Dispatchers.IO + handler) {
             db.studomatDao().insert(studomatSubjectTestData)
             db.studomatDao().insertYears(studomatYearInfoTestData)
